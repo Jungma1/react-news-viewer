@@ -1,24 +1,16 @@
-import logo from './logo.svg';
 import './App.css';
-import { useState } from 'react';
-import axios from 'axios';
+import { useCallback, useState } from 'react';
 import NewsList from './components/NewsList';
+import Categories from './components/Categories';
 
 function App() {
-  const [data, setData] = useState(null);
-  const onClick = async () => {
-    try {
-      const response = await axios.get(
-        'https://newsapi.org/v2/top-headlines?country=kr&apiKey=e54e52a9729542a189d67f24a16fda87'
-      );
-      setData(response.data);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
+  const [category, setCategory] = useState('all');
+  const onSelect = useCallback(category => setCategory(category), []);
   return (
-    <NewsList />
+    <>
+      <Categories category={category} onSelect={onSelect} />
+      <NewsList category={category} />
+    </>
   );
 }
 
